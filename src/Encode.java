@@ -31,6 +31,7 @@ public class Encode {
             FinalNode finalNode = (FinalNode)node;
             finalNode.setCode(code.toString());
             codeTable.put(finalNode.getaChar(), finalNode.getCode());
+            System.out.println(codeTable);
         } else if (node instanceof MiddleNode){
             MiddleNode middleNode = (MiddleNode)node;
 
