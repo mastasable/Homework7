@@ -1,21 +1,12 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * Created by admin on 30.03.2015.
  */
 public class Encode {
-    public static void main(String...args){
-        String s = "it my striiiiiing!";
-        char[] chars = s.toCharArray();
+    public static Node buildTree(int[] charPop){
         ArrayList<Node> nodes = new ArrayList<Node>();
-        int[] charPop = new int[256];
 
-        for (char c : chars){
-            charPop[c]++;
-        }
         for (int i=0; i<charPop.length; i++){
             if (charPop[i]>0){
                 FinalNode finalNode = new FinalNode((char)i, charPop[i]);
@@ -31,7 +22,27 @@ public class Encode {
             nodes.add(middleNode);
             nodes.remove(nodes.size()-2);
         }
+        return nodes.get(0);
+    }
 
+    public static HashMap buildCodeTable(Node node, StringBuffer code){
+        HashMap<Character, String> codeTable = new HashMap<>();
+        if(node instanceof FinalNode){
+            FinalNode finalNode = (FinalNode)node;
+            finalNode.setCode(code.toString());
+            codeTable.put(finalNode.getaChar(), finalNode.getCode());
+        } else if (node instanceof MiddleNode){
+            MiddleNode middleNode = (MiddleNode)node;
+
+            code.append('0');
+            buildCodeTable(middleNode.left, code);
+            code.deleteCharAt(code.length()-1);
+
+            code.append('1');
+            buildCodeTable(middleNode.right, code);
+            code.deleteCharAt(code.length()-1);
+        }
+        return codeTable;
     }
 
 }

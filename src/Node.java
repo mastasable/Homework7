@@ -4,6 +4,7 @@
 public class Node implements Comparable{
     public final int popularity;
 
+
     public Node(int popularity) {
         this.popularity = popularity;
     }
