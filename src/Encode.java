@@ -4,6 +4,18 @@ import java.util.*;
  * Created by admin on 30.03.2015.
  */
 public class Encode {
+    public static void compress(String s){
+        char[] chars = s.toCharArray();
+
+        int[] charPop = new int[65536];
+        for (char c:chars)
+            charPop[c]++;
+        Node root = buildTree(charPop);
+        buildCodeTable(root, new StringBuffer());
+        writeCode(root);
+
+    }
+
     public static Node buildTree(int[] charPop){
         ArrayList<Node> nodes = new ArrayList<Node>();
 
@@ -25,13 +37,10 @@ public class Encode {
         return nodes.get(0);
     }
 
-    public static HashMap buildCodeTable(Node node, StringBuffer code){
-        HashMap<Character, String> codeTable = new HashMap<>();
+    public static void buildCodeTable(Node node, StringBuffer code){
         if(node instanceof FinalNode){
             FinalNode finalNode = (FinalNode)node;
             finalNode.setCode(code.toString());
-            codeTable.put(finalNode.getaChar(), finalNode.getCode());
-            System.out.println(codeTable);
         } else if (node instanceof MiddleNode){
             MiddleNode middleNode = (MiddleNode)node;
 
@@ -43,7 +52,17 @@ public class Encode {
             buildCodeTable(middleNode.right, code);
             code.deleteCharAt(code.length()-1);
         }
-        return codeTable;
+
+    }
+
+    public static void writeCode(Node node){
+        if(node instanceof FinalNode){
+            System.out.print(((FinalNode) node).code);
+            return;
+        } else if (node instanceof  MiddleNode){
+            writeCode(((MiddleNode) node).left);
+            writeCode(((MiddleNode) node).right);
+        }
     }
 
 }
