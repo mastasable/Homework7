@@ -11,8 +11,11 @@ public class Encode {
         for (char c:chars)
             charPop[c]++;
         Node root = buildTree(charPop);
+
         buildCodeTable(root, new StringBuffer());
-        writeCode(root);
+        for (int i=0; i<chars.length; i++){
+            writeCode(root, chars[i]);
+        }
 
     }
 
@@ -41,6 +44,7 @@ public class Encode {
         if(node instanceof FinalNode){
             FinalNode finalNode = (FinalNode)node;
             finalNode.setCode(code.toString());
+            System.out.println(finalNode.aChar + " = " + finalNode.getCode());
         } else if (node instanceof MiddleNode){
             MiddleNode middleNode = (MiddleNode)node;
 
@@ -55,14 +59,16 @@ public class Encode {
 
     }
 
-    public static void writeCode(Node node){
+    public static void writeCode(Node node, char c){
         if(node instanceof FinalNode){
-            System.out.print(((FinalNode) node).code);
-            return;
+            if(((FinalNode) node).getaChar() == c){
+                System.out.print(((FinalNode) node).getCode());
+            }
         } else if (node instanceof  MiddleNode){
-            writeCode(((MiddleNode) node).left);
-            writeCode(((MiddleNode) node).right);
+            writeCode(((MiddleNode) node).left, c);
+            writeCode(((MiddleNode) node).right, c);
         }
+
     }
 
 }
